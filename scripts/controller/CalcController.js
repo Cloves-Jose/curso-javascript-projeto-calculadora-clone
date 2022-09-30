@@ -24,7 +24,18 @@ class CalcController {
         }, 1000);
     }
 
-    //Exibe data e hora formatados para o país.
+    /**
+     * Inicializa eventos do botão
+     */
+    initButtonsEvents() {
+
+        let buttons = document.querySelectorAll("#buttons > g, #parts > g");
+
+    }
+
+    /**
+     * Captura data e hora de acordo com o país selecionado.
+     */
     setDisplayDateTime() {
         this.displayTime = this.currentDate.toLocaleTimeString(this._locale);
         this.displayDate = this.currentDate.toLocaleDateString(this._locale);
