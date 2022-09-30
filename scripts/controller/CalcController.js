@@ -9,6 +9,7 @@ class CalcController {
         this._currentDate;
         this._locale = 'pt-BR'
         this.initialize();
+        this.initButtonsEvents();
     }
 
     /**
@@ -25,11 +26,32 @@ class CalcController {
     }
 
     /**
-     * Inicializa eventos do botão
+     * Vai receber todos os eventos de click do mouse
+     */
+    addEventListenerAll(element, events, fn) {
+        events.split(' ').forEach(event => {
+            element.addEventListener(event, fn);
+        })
+    }
+
+    /**
+     * Adiciona os eventos aos botões da calculadora
      */
     initButtonsEvents() {
-
         let buttons = document.querySelectorAll("#buttons > g, #parts > g");
+        //Percorrer todos os botões
+        buttons.forEach((btn, index) => {
+            
+            this.addEventListenerAll(btn, 'click drag', e => {
+
+                console.log(btn.className.baseVal.replace("btn-",""));
+            })
+
+            this.addEventListenerAll(btn, 'mouseover mouseup mousedown', e => {
+
+                btn.style.cursor = "pointer";
+            })
+        })
 
     }
 
