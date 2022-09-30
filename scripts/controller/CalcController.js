@@ -6,6 +6,7 @@ class CalcController {
         this._dateEl = document.querySelector("#data");
         this._timeEl = document.querySelector("#hora");
 
+        this._operation = [];
         this._currentDate;
         this._locale = 'pt-BR'
         this.initialize();
@@ -35,6 +36,78 @@ class CalcController {
     }
 
     /**
+     * Vai limpar todos os valores da calculadora
+     */
+    clearAll() {
+        this._operation = [];
+    }
+
+    /**
+     * Vai apagar a última entrada na calculadora e 
+     * manter as entradas anteriores
+     */
+    clearEntry() {
+        this._operation.pop();
+    }
+
+    /**
+     * Vai adicionar uma operação matemática a 
+     * calculadora
+     */
+    addOperation(value) {
+        this._operation.push(value);
+    }
+
+    /**
+     * Erro que será exibido na calculadora
+     */
+    setError() {
+        this.displayCalc = "Error"
+    }
+
+    /**
+     * Vai tratar os eventos dos botoes quando clicados
+     */
+    execBtn(value) {
+        switch (value){
+            case 'ac':
+                this.clearAll();
+                break;
+            case 'ce':
+                this.clearEntry();
+                break;
+            case 'porcento':
+                break;
+            case 'divisao':
+                break;
+            case 'multiplicacao':
+                break;
+            case 'subtracao':
+                break;
+            case 'soma':
+                break;
+            case 'igual':
+                break;
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                this.addOperation(parseInt(value))
+                break;
+            default:
+                this.setError();
+                break;
+        }
+             
+    }
+
+    /**
      * Adiciona os eventos aos botões da calculadora
      */
     initButtonsEvents() {
@@ -44,7 +117,9 @@ class CalcController {
             
             this.addEventListenerAll(btn, 'click drag', e => {
 
-                console.log(btn.className.baseVal.replace("btn-",""));
+                let textBtn = btn.className.baseVal.replace("btn-","");
+
+                this.execBtn(textBtn);
             })
 
             this.addEventListenerAll(btn, 'mouseover mouseup mousedown', e => {
