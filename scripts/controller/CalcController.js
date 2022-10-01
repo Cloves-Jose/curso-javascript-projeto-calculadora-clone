@@ -52,25 +52,74 @@ class CalcController {
 
     /**
      * Vai pegar a última posição do array
+     * @returns number
      */
     getLastOperation() {
         return this._operation[this._operation.length - 1];
     }
 
     /**
-     * Concateda o último valor do array com o valor adicionado
+     * Concatena o último valor do array com o valor adicionado
+     * @param {number} value 
      */
     setLastOperation(value) {
         this._operation[this._operation.length - 1] = value;
     }
 
     /**
-     * Verifica se o último item clicado é um
+     * Verificar se o último item clicado é um 
      * operador ou não
+     * @param {string} value 
+     * @returns true or false
      */
     isOperator(value) {
         //Vai verificar se o valor existe no array
         return (['+', '-', '*', '%', '/'].indexOf(value) > -1);
+    }
+
+    /**
+     * Vai realizar o push em _operator
+     * @param {string} value 
+     */
+    pushOperator(value) {
+        this._operation.push(value);
+
+        if(this._operation.length > 3) {
+            console.log(this.calc());
+            
+        }
+    }
+
+    /**
+     * Pega os três últimos valores adicionados e 
+     * realiza a operação antes de adicionar um novo 
+     * valor ao array.
+     */
+    calc() {
+        let last = this._operation.pop();
+        let result = eval(this._operation.join(""));
+
+        this._operation = [result, last];
+
+        this.setLastNumberToDisplay();
+    }
+
+    /**
+     * Exibe o produto da última operação realizada 
+     * no display 
+     */
+    setLastNumberToDisplay() {
+        let lastNumber;
+
+        for(let i = this._operation.length-1; i >= 0; i--) {
+
+            if(!this.isOperator(this._operation[i])) {
+                lastNumber = this._operation[i];
+                break;
+            }
+        }
+
+        this.displayCalc = lastNumber;
     }
 
     /**
@@ -80,24 +129,35 @@ class CalcController {
     addOperation(value) {
 
         if(isNaN(this.getLastOperation())) {
-            //String
+
             if(this.isOperator(value)) {
+                
                 //Trocar o operador
-                this.setLastOperation(value)
+                this.setLastOperation(value);
+
             } else if(isNaN(value)) {
                 //Outra coisa
-                //this.getLastOperation.toString + value.toString();
-                console.log(value)
+            
             } else {
-                this._operation.push(value);
+                
+                this.pushOperator(value);
+
+                this.setLastNumberToDisplay();
             }
         } else {    
-            //Number
-            let newValue = this.getLastOperation().toString() + value.toString();
-            this.setLastOperation(parseInt(newValue));
-        }
+            if(this.isOperator(value)) {
 
-        //this._operation.push(value);
+                this.pushOperator(value)
+            } else {
+
+                //Number
+                let newValue = this.getLastOperation().toString() + value.toString();
+                this.setLastOperation(parseInt(newValue));
+
+                //atualizar display
+                this.setLastNumberToDisplay();
+            }
+        }
 
         console.log(this._operation);
     }
