@@ -158,8 +158,6 @@ class CalcController {
                 this.setLastNumberToDisplay();
             }
         }
-
-        console.log(this._operation);
     }
 
     /**
